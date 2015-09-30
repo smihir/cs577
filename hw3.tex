@@ -1,7 +1,7 @@
 \documentclass[8pt]{article}
 
 \usepackage{fullpage}
-\usepackage[margin=0.5in]{geometry}
+\usepackage[margin=.7in]{geometry}
 \usepackage{epic}
 \usepackage{eepic}
 \usepackage{graphicx}
@@ -9,6 +9,7 @@
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage{ragged2e}
+\usepackage[parfill]{parskip}
 
 \newcommand{\proof}[1]{
 {\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
@@ -75,13 +76,14 @@ $\sum_{a_i \textless a_k} w_i \textless 1/2$ and $\sum_{a_i \textless= a_k} w_i 
 \end{algorithmic}
 \end{algorithm}
 
+\begin{flushleft}
 Our Algorithm uses the Selection() procedure discussed in section 6 of the Lecture 
 notes on Divide and Conquer. When \textit{Weighted-Median} is called it will first
-find the \ceil{n/2} smallest element in A using the Selection() procedure in linear
+find the $\ceil{n/2}$ smallest element in A using the Selection() procedure in linear
 time, let's call this value \textit{Median}(because it is actually the median of
 sorted elements in A). We will use this value to \textit{Partition} the Array A into
-2 arrays L and R such that the Value $a_i^R$ of all elements in L is less than or equal
-to value of \textit{Median} and Value $a_i^R$ of all elements in R is greater than \texit{Median}.
+2 arrays L and R such that the Value $a_i^L$ of all elements in L is less than or equal
+to value of \textit{Median} and Value $a_i^R$ of all elements in R is greater than \textit{Median}.
 
 If the weight of all elements in L is less than 1/2 and on adding the weight of the \textit{Pivot}
 it becomes greater than or equal to 1/2 then \textit{Pivot} is our Weighted Median and
@@ -93,12 +95,14 @@ If the aggregate of weight of elements in L and the weight of \textit{Pivot} is 
 then we know the Weighted Median is in R. So we change the weight of the
 \textit{Pivot} as: $w_{Pivot} \leftarrow w_{Pivot} + \sum L_w$. So \textit{Pivot's} weight
 now also includes the weight of elements to its Left(i.e all elements less than equal to pivot).
+
 After changing the weight of \textit{Pivot} we will recursively call \textit{Weighted-Median}
-procedure on array \textit{Pivot}|R. Prepending \textit{Pivot} with added weight to R
+procedure on array $\textit{Pivot}|R$. Prepending \textit{Pivot} with added weight to R
 assures that we consider the weight of all elements which are lesser than all elements in R
 while calculating the Weighted Median from the new sub-array and the Median retured by the
 recursive call is actually the Median of original Array A.
 
+\newpage
 \subsection{Correctness}
 We will proceed to prove the correctness of our algorithm by proving partial correctness
 and termination.
@@ -110,27 +114,32 @@ the recursive calls to \textit{Weighted-Median} will always have a valid array a
 
 The algorithm returns from 2 places. The first case is trivially true because if the length
 of the array is 1 then the only element in the array is the Weighted-Median. In the second
-return we see that the sum of all elements to the Left of the \texit{Pivot} in the partitioned
-array is less than 1/2 and when we add the weight of the \texit{Pivot} the aggregated weight
-becomes $\geq{1/2}$ then we say that the \texit{Pivot} is the Weighted Median which is true
+return we see that the sum of all elements to the Left of the \textit{Pivot} in the partitioned
+array is less than 1/2 and when we add the weight of the \textit{Pivot} the aggregated weight
+becomes $\geq{1/2}$ then we say that the \textit{Pivot} is the Weighted Median which is true
 as per definition because all the elements to the left of \textit{Pivot} in the partitioned
 array are less than or equal to the \textit{Pivot}.
 
 \subsubsection{Termination}
-Let \mu(length(A)) be the potential function then we can see that in the recursive calls \\
-$\mu(length(A_{recursive)} = \mu(length(A[0...\ceil{n/2}]))) OR \mu(length(A_{recursive)} = \mu(length(A[\ceil{n/2} + 1 ... n - 1])))$ \\
+Let $\mu(length(A))$ be the potential function then we can see that in the recursive calls
+
+\begin{center}
+$\mu(length(A_{recursive)}) = \mu(length(A[0...\ceil{n/2}])) OR \mu(length(A_{recursive)}) = \mu(length(A[\ceil{n/2} + 1 ... n - 1]))$
+\end{center}
+
 So the potential function will decrease each recursive call and our program is guaranteed to terminate.
 
 \subsection{Complexity Analysis}
-Its trivial to see that our recursive calls operate on an input of size \ceil{n/2} \pm 1 and in 
+Its trivial to see that our recursive calls operate on an input of size $\ceil{n/2} \pm 1$ and in 
 worst case our algorithm will go through log(n) recursive calls.
 
 All the steps in our procedure take constant time except \textit{Selection} and \textit{Partition}
 which take linear time. So total running time of our alogrithm in worst case will be:
-
+\begin{center}
 $c*(n/2^0) + c*(n/2^1) + c*(n/2^2) ... + c*(n/2^{log(n)}) \le c*n*(1 + 1/2 + 1/4 ....)$
-
+\end{center}
 The above is a geometric series with sum limiting to 2. Hence, our algo can take c*2*n time in
-worst case and so it is Linear in n i.e O(n)
+worst case and so it is linear in n i.e O(n)
+\end{flushleft}
 
 \end{document}
