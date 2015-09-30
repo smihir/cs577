@@ -1,0 +1,73 @@
+\documentclass[8pt]{article}
+
+\usepackage{fullpage}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{ragged2e}
+
+\newcommand{\proof}[1]{
+{\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
+}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{corollary}[lemma]{Corollary}
+
+%\setlength{\oddsidemargin}{0in}
+%\setlength{\topmargin}{0in}
+%\setlength{\textwidth}{6.5in}
+%\setlength{\textheight}{8.5in}
+
+\begin{document}
+
+\hfill \small{\today} \\
+\setlength{\fboxrule}{.5mm}\setlength{\fboxsep}{1.2mm}
+\newlength{\boxlength}\setlength{\boxlength}{\textwidth}
+\addtolength{\boxlength}{-4mm}
+\begin{center}\framebox{\parbox{\boxlength}{\bf
+\center{CS 577 - Homework 3}
+\center{Sejal Chauhan, Vinothkumar Siddharth, Mihir Shete}
+}}\end{center}
+\vspace{5mm}
+
+\section{Graded written problem}
+
+\textbf{Input:} A sequence of n real numbers $a_1$, $a_2$,..., $a_n$ and a corresponding sequence of weights $w_1$, $w_2$, . . . , $w_n$. The weights are nonnegative reals that add up to 1, i.e. $\sum_n^{i=1} w_i = 1$. \\
+\\
+\textbf{Output:} The weighted median of the sequence is the number $a_k$ such that
+$\sum_{a_i \textless a_k} w_i \textless 1/2$ and $\sum_{a_i \textless= a_k} w_i \geq 1/2$
+
+\begin{algorithm}
+\caption{Algorithm to find weighted median}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Weighted-Median}{$A_w^a$}
+
+    \State $Median = \leftarrow \Call{Selection}{A_w^a, \ceil{n/2}}$ \Comment{The Selection will happen over A}
+    \State $Pivot \leftarrow Median$
+    \State $L_{w}^{a},R_{w}^{r} \leftarrow \Call{Partition}{A_w^a, Pivot}$ 
+    \If{$\sum w_L$ \textless $1/2$}
+        \State $w_{Pivot} \leftarrow \sum w_L + w_{Pivot}$
+        \If{$w_{Pivot} \geq 1/2$}
+            \State \Return ${Pivot}$
+        \EndIf
+        \State $\Call{Weighted-Median}{Pivot|R_w^a}$
+    \Else
+        \State $\Call{Weighted-Median}{L_w^a}$
+    \EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\end{document}
