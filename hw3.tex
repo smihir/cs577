@@ -60,7 +60,7 @@ $\sum_{a_i \textless a_k} w_i \textless 1/2$ and $\sum_{a_i \textless= a_k} w_i 
 
 \State $Median = \leftarrow \Call{Selection}{A_w^a, \ceil{length(A_w^a)/2}}$ \Comment{The Selection will happen over A}
     \State $Pivot \leftarrow Median$
-    \State $L_{w}^{a},R_{w}^{r} \leftarrow \Call{Partition}{A_w^a, Pivot}$
+    \State $L_{w}^{a},R_{w}^{a} \leftarrow \Call{Partition}{A_w^a, Pivot}$
 
     \If{$\sum w_L$ \textless $1/2$}
         \State $w_{Pivot} \leftarrow \sum w_L + w_{Pivot}$
@@ -89,7 +89,7 @@ If the weight of all elements in L is less than 1/2 and on adding the weight of 
 it becomes greater than or equal to 1/2 then \textit{Pivot} is our Weighted Median and
 we return the value of the \textit{Pviot}. If the weight of all elements in L is greater
 than or equal to 1/2 then we can say that the Weighted Median is present in the array L
-and we recursively call \textit{Weigred-Median} on L.
+and we recursively call \textit{Weighted-Median} on L.
 
 If the aggregate of weight of elements in L and the weight of \textit{Pivot} is less than 1/2
 then we know the Weighted Median is in R. So we change the weight of the
@@ -99,8 +99,7 @@ now also includes the weight of elements to its Left(i.e all elements less than 
 After changing the weight of \textit{Pivot} we will recursively call \textit{Weighted-Median}
 procedure on array $\textit{Pivot}|R$. Prepending \textit{Pivot} with added weight to R
 assures that we consider the weight of all elements which are lesser than all elements in R
-while calculating the Weighted Median from the new sub-array and the Median retured by the
-recursive call is actually the Median of original Array A.
+while calculating the Weighted Median from the new sub-array, so the Weighted Median returned by the recursive call is actually the Weighted Median of original Array A.
 
 \newpage
 \subsection{Correctness}
@@ -108,8 +107,8 @@ We will proceed to prove the correctness of our algorithm by proving partial cor
 and termination.
 
 \subsubsection{Partial Correctness}
-The recursive calls to \textit{Weighted-Median} will be made on subarray of the input.
-It is trivial to see that the length of the subarray will never be negative or 0. So
+The recursive calls to \textit{Weighted-Median} will be made on sub-array of the input.
+It is trivial to see that the length of the sub-array will never be negative or 0. So
 the recursive calls to \textit{Weighted-Median} will always have a valid array as input.
 
 The algorithm returns from 2 places. The first case is trivially true because if the length
@@ -124,7 +123,7 @@ array are less than or equal to the \textit{Pivot}.
 Let $\mu(length(A))$ be the potential function then we can see that in the recursive calls
 
 \begin{center}
-$\mu(length(A_{recursive)}) = \mu(length(A[0...\ceil{n/2}])) OR \mu(length(A_{recursive)}) = \mu(length(A[\ceil{n/2} + 1 ... n - 1]))$
+$\mu(length(A_{recursive)}) = \mu(length(A[0...\ceil{n/2}]))$ OR $\mu(length(A_{recursive)}) = \mu(length(A[\ceil{n/2} + 1 ... n - 1]))$
 \end{center}
 
 So the potential function will decrease each recursive call and our program is guaranteed to terminate.
@@ -134,12 +133,11 @@ Its trivial to see that our recursive calls operate on an input of size $\ceil{n
 worst case our algorithm will go through log(n) recursive calls.
 
 All the steps in our procedure take constant time except \textit{Selection} and \textit{Partition}
-which take linear time. So total running time of our alogrithm in worst case will be:
+which take linear time. So total running time of our algorithm in worst case will be:
 \begin{center}
 $c*(n/2^0) + c*(n/2^1) + c*(n/2^2) ... + c*(n/2^{log(n)}) \le c*n*(1 + 1/2 + 1/4 ....)$
 \end{center}
-The above is a geometric series with sum limiting to 2. Hence, our algo can take c*2*n time in
-worst case and so it is linear in n i.e O(n)
+The above is a geometric series with sum limiting to 2. Hence, our algorithm can take c*2*n time in worst case and so it is linear in n i.e O(n)
 \end{flushleft}
 
 \end{document}
