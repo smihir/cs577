@@ -58,7 +58,7 @@ $\sum_{a_i \textless a_k} w_i \textless 1/2$ and $\sum_{a_i \textless= a_k} w_i 
     \State \Return{A[0]} 
 \EndIf
 
-\State $Median = \leftarrow \Call{Selection}{A_w^a, \ceil{length(A_w^a)/2}}$ \Comment{The Selection will happen over A}
+\State $Median \leftarrow \Call{Selection}{A_w^a, \ceil{length(A_w^a)/2}}$ \Comment{The Selection will happen over A}
     \State $Pivot \leftarrow Median$
     \State $L_{w}^{a},R_{w}^{a} \leftarrow \Call{Partition}{A_w^a, Pivot}$
 
