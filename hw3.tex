@@ -123,7 +123,7 @@ array are less than or equal to the \textit{Pivot}.
 Let $\mu(length(A))$ be the potential function then we can see that in the recursive calls
 
 \begin{center}
-$\mu(length(A_{recursive)}) = \mu(length(A[0...\ceil{n/2}]))$ OR $\mu(length(A_{recursive)}) = \mu(length(A[\ceil{n/2} + 1 ... n - 1]))$
+    $\mu(length(A_{recursive)}) = \mu(length(A[0...\ceil{n/2}]))$ OR $\mu(length(A_{recursive)}) = \mu(length(A[\ceil{n/2} + 1 ... n - 1])) \leq \mu(length(A))$
 \end{center}
 
 So the potential function will decrease each recursive call and our program is guaranteed to terminate.
