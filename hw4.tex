@@ -45,21 +45,31 @@
 
 \textbf{Input:} An alphabetical list with the names of all n kayakers for a given day, together with the times they will arrive at the parking lot.
 \\ \\
-\textbf{Constraints:} A single round-trip lasts \textit{\textbf{m}} minutes and we can take \textit{\textbf{k}} kayakers in one trip. The kayakers should be served with FCFS discipline but we can decide for each roundtrip when the bus leaves and how many kayakers we take along.
+\textbf{Constraints:} A single round-trip lasts \textit{\textbf{m}} minutes and we can take \textit{\textbf{k}} kayakers in one trip. The kayakers should be served with FCFS discipline but we can decide for each round trip when the bus leaves and how many kayakers we take along.
 \\ \\
 \textbf{Output:} Organize the schedule so that we are done with our task of droppping the kayakers to the kayak launch platform as early as possible.
 
 \subsection{Algorithm}
-We will solve this problem using a greedy strategy. Our strategy works by minimizing the number of trips and minimizing the starting time of each trip. Our algorithm starts by ordering the list by arrival time (earliest arrival time first). The running time for this initial sort is \textit{O(n logn)}.
+We will solve this problem using a greedy strategy. Our strategy works by minimizing the number of trips and minimizing the starting time of the each trip. Our algorithm starts by ordering the list by arrival time (earliest arrival time first). The running time for this initial sort is \textit{O(n logn)}.
 
 For this ordered list we will employ the following strategy:
 \begin{enumerate}
-    \item If there are \textit{$k_i$} kayakers in the parking lot at time \textit{$t_i$} and there are no more scheduled arrivals in the interval \textit{$t \geq t_i$} to \textit{$t \leq t_i + \textbf{m}$} then we should carry the \textit{$k_i$} kayakers immediately. (if $ k_i \geq \textbf{k}$ then look at \textit{Point 3})
-    \item If there are \textit{$k_i$, $k_{i+1}$, $k_{i+2}$ ... $k_{i+j}$} kayakers arriving at \textit{$t_i$, $t_{i+1}$, $t_{i+2}$ ... $t_{i+j}$} and each arrival time is within \textit{m} minutes of the immediate next arrival time (i.e  \textit{$t_{i+1} - t_i \leq m$} and so on). Also, \textit{$t_i - t_{i-1} \textgreater \textbf{m}$} and \textit{$t_{i+j+1} - t_{i+j} \textgreater \textbf{m}$}. Let \textit{t} be the minimum number of trips required to drop $\sum_i^{i+j}k_i$ kayakers. We will start our first trip as soon as we have atleast \textbf{$\textit{t mod \textbf{k}}$} kayakers at the parking lot. And, if \textit{t \textgreater \textbf{k}} the second trip will begin when the number of kayakers waiting at the parking lot are \textit{\textbf{k}}. This way we are trying to minimize the start time of the first trip keeping the minimum number of trips constant.
-\\
-{\footnotesize \textit{if we start the first trip when kayakers are less than \textbf{(t mod k)} then we will need more than \textbf{t} trips and hence more time, but if we start our first trip later than when \textbf{(t mod k)} kayakers arrive, our last trip will end a little later}.}
-    \item If at any point of time there are $\geq$\textbf{k} kayakers at the parking lot then we start the trip immediately with \textbf{k} kayakers.
+    \item Suppose there are \textit{$k_1$, $k_2$, $k_3$, ... $k_n$} kayakers arriving in the parking lot at times \textit{$t_1$, $t_2$, $t_3$, ... $t_n$}
+    \item Let \textit{t} be the minimum number of trips required to drop $\sum_{i=i}^{n}k_i$ kayakers. Now we will start looking at the number of kayakers arriving at each time from the end of our sorted list. When $\sum_{i=n}^{n-j_p}k_i$ = \textbf{k} we will group the kayakers to go in the same trip.(\textit{$j_p$} can represent partial number of total kayakers arriving at \textit{$t_j$} so that the sum is exactly \textbf{k}). We will go on doing this grouping till the number of kayakers remaining are \textit{$\sum_{i=i}^nk_i$ mod $\textbf{k}$}. \\ \\
+        We will start our first trip as soon as we have at least \textbf{\textit{$\sum_{i=i}^nk_i$ mod $\textbf{k}$}} (or \textbf{k} if \textbf{\textit{$\sum_{i=i}^nk_i$ mod $\textbf{k}$}} = 0) kayakers at the parking lot. The second trip will begin when the number of kayakers waiting at the parking lot are \textit{\textbf{k}}. This way we are trying to minimize the start time of the first trip keeping the minimum number of trips constant.
+\\ \\
+{\footnotesize \textbf{Note:} Intuitively, if we start the first trip when kayakers are less than \textbf{($\sum_{i=i}^nk_i$ mod k)} then we will need more than \textbf{t} trips and hence we \textit{may} need more time, but if we start our first trip later than when \textbf{($\sum_{i=i}^nk_i$ mod k)} kayakers arrive, our last trip \textit{may} end a little later.}
 \end{enumerate}
+
+\subsection{Greedy Stays Ahead Proof}
+Our greedy strategy is to accommodate as many kayakers on a trip from then last arrival time so that the trips taken to transport the kayakers are minimized and the first trip will start as early as possible. So the notion of 'time' in our greedy-stays-ahead approach will be the amount of time that is required for the trips to transport the remaining kayakers which are going to come in the future and are currently in the parking lot when the bus is at the lot. And our choice of ahead will be to simply say that the Greedy solution \textit{G} at the current time has atmost same number of trips remaining as as solution \textit{S}.
+
+Let \textit{$t_G(i)$} be the number of trips required by the greedy strategy to carry all the kayakers that are at the parking lot and will come after time \textit{i}. Let \textit{$t_S(i)$} be a similar quantity for \textit{S}.
+
+We claim that, \textit{$t_G(i) \leq t_S(i)$}. So, at $i=0$ the minimum number of trips required to transport all the \textit{$\sum_{i=i}^nk_i$} kayakers will be: \textit{$t=\ceil{\sum_{i=i}^nk_i/\textbf{k}}$}. Now, \textit{G} starts the first trip only when \textbf{\textit{$\sum_{i=i}^nk_i$ mod k}} kayakers are present,  if \textit{S} starts a trip before that than after the trip is done it will still need to make \textit{t} more trips. So after the first trip we say that our claim always holds.
+
+We start the subsequent trips when we have alteast \textit{k} kayakers at the parking lot so that the number of trips remain minimal. If \textit{S} tries to start a trip before reaching the maximal capacity of the bus then it will have to make more trips and so it \textit{may} take more time for \textit{S} to transport all the kayakers.
+
 
 
 \end{document}
