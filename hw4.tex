@@ -45,7 +45,7 @@
 
 \textbf{Input:} An alphabetical list with the names of all n kayakers for a given day, together with the times they will arrive at the parking lot.
 \\ \\
-\textbf{Constraints:} A single round-trip lasts \textbf{m} minutes and we can take \textbf{k} kayakers in one trip. The kayakers should be served with FCFS discipline but we can decide for each roundtrip when the bus leaves and how many kayakers we take along.
+\textbf{Constraints:} A single round-trip lasts \textit{\textbf{m}} minutes and we can take \textit{\textbf{k}} kayakers in one trip. The kayakers should be served with FCFS discipline but we can decide for each roundtrip when the bus leaves and how many kayakers we take along.
 \\ \\
 \textbf{Output:} Organize the schedule so that we are done with our task of droppping the kayakers to the kayak launch platform as early as possible.
 
@@ -55,7 +55,9 @@ We will solve this problem using a greedy strategy. Our strategy works by minimi
 For this ordered list we will employ the following strategy:
 \begin{enumerate}
     \item If there are \textit{$k_i$} kayakers in the parking lot at time \textit{$t_i$} and there are no more scheduled arrivals in the interval \textit{$t \geq t_i$} to \textit{$t \leq t_i + \textbf{m}$} then we should carry the \textit{$k_i$} kayakers immediately. (if $ k_i \geq \textbf{k}$ then look at \textit{Point 3})
-    \item If there are \textit{$k_i$, $k_{i+1}$, $k_{i+2}$ ... $k_{i+j}$, $k_{i+j+1}$} kayakers arriving at \textit{$t_i$, $t_{i+1}$, $t_{i+2}$ ... $t_{i+j}$, $t_{i+j+1}$} and each arrival time is within \textit{m} minutes of the immediate next arrival time (i.e  \textit{$t_{i+1} - t_i \leq m$} and so on) and $k_i + k_{i+i} + ... + k_{i+j} \leq$ \textbf{k} but if we add $k_{i+j+1}$ then $\sum_{i}^{i+j+1} k_i \textgreater \textbf{k}$. Now we know that to transport these many kayakers we will take atleast 2 trips (it can take more than 2 if \textit{$k_{i+j+1}$} is much bigger than \textbf{k}). Now, to end our trips as early as possible we will aim to start our first trip as early as possible. So, what we do is find an arrival time \textit{$t_{s}$} between \textit{$t_i$} and \textit{$t_{i+j+1}$} so that number of kayakers arriving from \textit{$t_s$} to \textit{$t_{i+j+1}$} is just $\leq \textbf{k}$ (i.e if we include kayakers arriving at \textit{$t_{s-1}$} number of kayakers in the interval will become $\textgreater \textbf{k}$). We will start our first trip at \textit{$t_{s-1}$} this way we are making sure that the number of trips are same but the starting time of first trip is minimized.
+    \item If there are \textit{$k_i$, $k_{i+1}$, $k_{i+2}$ ... $k_{i+j}$} kayakers arriving at \textit{$t_i$, $t_{i+1}$, $t_{i+2}$ ... $t_{i+j}$} and each arrival time is within \textit{m} minutes of the immediate next arrival time (i.e  \textit{$t_{i+1} - t_i \leq m$} and so on). Also, \textit{$t_i - t_{i-1} \textgreater \textbf{m}$} and \textit{$t_{i+j+1} - t_{i+j} \textgreater \textbf{m}$}. Let \textit{t} be the minimum number of trips required to drop $\sum_i^{i+j}k_i$ kayakers. We will start our first trip as soon as we have atleast \textbf{$\textit{t mod \textbf{k}}$} kayakers at the parking lot. And, if \textit{t \textgreater \textbf{k}} the second trip will begin when the number of kayakers waiting at the parking lot are \textit{\textbf{k}}. This way we are trying to minimize the start time of the first trip keeping the minimum number of trips constant.
+\\
+{\footnotesize \textit{if we start the first trip when kayakers are less than \textbf{(t mod k)} then we will need more than \textbf{t} trips and hence more time, but if we start our first trip later than when \textbf{(t mod k)} kayakers arrive, our last trip will end a little later}.}
     \item If at any point of time there are $\geq$\textbf{k} kayakers at the parking lot then we start the trip immediately with \textbf{k} kayakers.
 \end{enumerate}
 
