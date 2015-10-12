@@ -1,0 +1,47 @@
+\documentclass[8pt]{article}
+
+\usepackage{fullpage}
+\usepackage[margin=.7in]{geometry}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{ragged2e}
+\usepackage[parfill]{parskip}
+
+\newcommand{\proof}[1]{
+{\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
+}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{corollary}[lemma]{Corollary}
+
+\begin{document}
+\hfill \small{\today} \\
+\setlength{\fboxrule}{.5mm}\setlength{\fboxsep}{1.2mm}
+\newlength{\boxlength}\setlength{\boxlength}{\textwidth}
+\addtolength{\boxlength}{-4mm}
+\begin{center}\framebox{\parbox{\boxlength}{\bf
+\center{CS 577 - Homework 5}
+\center{Sejal Chauhan, Vinothkumar Siddharth, Mihir Shete}
+}}\end{center}
+\vspace{5mm}
+
+\section{Graded written problem}
+
+\textbf{Input:} In a city there are $n$ bus drivers. There are also $n$ morning bus routes and $n$ afternoon bus routes, each with various lengths. Each driver is assigned one morning route
+and one evening route. For any driver, if his total route length for a day exceeds $d$, he has to
+be paid overtime for every hour after the first $d$ hours at a fixed rate per hour.
+\\ \\
+\textbf{Output:} Assign one morning route and one evening route to each bus driver so that the total overtime amount that the city authority has to pay is minimized.
+
+\end{document}
