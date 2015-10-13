@@ -47,8 +47,8 @@ be paid overtime for every hour after the first $d$ hours at a fixed rate per ho
 \subsection{Algorithm}
 Our greedy algorithm begins by sorting the $n$ morning bus routes in reverse order (Longest route first) and the $n$ afternoon bus routes in order. Then on these \textit{ordered} routes we apply the following strategy:
 \begin{enumerate}
-    \item Starting from the first morning route we try to find the \textit{largest} afternoon route such that there sum is less than or equal to $d$. 
-    \item If there is no such afternoon route so that the sum of the morning and afternoon route is less than or equal to $d$ then we will pair the smallest available afternoon route with the given morning route.
+    \item Starting from the first morning route we try to find the \textit{largest} afternoon route such that their sum is less than or equal to $d$. 
+    \item If there is no such afternoon route such that the sum of the morning and afternoon route is less than or equal to $d$ then we will pair the smallest available afternoon route with the given morning route.
     \item Rule \textit{2.} Also implies that if morning route is greater than $d$ we will pair it with the smallest available afternoon route.
 \end{enumerate}
 
@@ -63,7 +63,7 @@ If we do time complexity analysis of the \textit{strategy} of pairing the routes
 \begin{algorithmic}[1]
 \Procedure{Find-Pair}{$key$, $A$, $left$, $right$}
 
-\If{$left \geq right$}
+\If{$left \textgreater right$}
     \Return left
 \EndIf
 
@@ -80,5 +80,67 @@ If we do time complexity analysis of the \textit{strategy} of pairing the routes
 \end{algorithm}
 
 If $key = d - m_i$ is present in the array $A$ then \textbf{Find-Pair} will return an index $k$ such that $A[k] = key$ and we can directly pair this trip of length $A[k]$ with trip $m_i$. if $key$ is not present and $A[k]$ \textless $key$ then we will also pair $k$ with $m_i$, but if $A[k] \textgreater m_i$ then we will pair $m_1$ with $A[k-1]$ if $k \textgreater 0$. The runtime of \textbf{Find-Pair} is $log(n)$ because we are divind the array in half for every iteration and using this algorithm we can complete our strategy on ordered arrays in $O(nlog(n))$ time.
+
+Let $M$ be the array of all ordered morning trips and $A$ be the array reresenting all ordered afternoon trips, our \textit{strategy} will be represented by the following Pseudocode:
+
+\begin{algorithm}
+\caption{Pseudocode of our greedy stratgey}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Find-All-Pairs}{$M$, $A$}
+
+\State $i \leftarrow 0$
+
+\While{$i \textless \left\vert{A}\right\vert$}
+    \If {$M[i] \geq d$}
+        \State Pair $M[i]$, $A[0]$
+        \State Delete $A[0]$ from $A$
+        \State continue
+    \EndIf
+    \State $key \leftarrow d - M[i]$
+    \State $index \leftarrow \Call{Find-Pair}{key, A, 0, \left\vert{A}\right\vert}$
+    \If {$A[index] \leq key$}
+        \State Pair $M[i]$, $A[index]$
+        \State Delete $A[index]$ from $A$
+    \Else
+        \If{$index = 0$}
+            \State Pair $M[i]$, $A[index]$
+            \State Delete $A[index]$ from $A$
+        \Else
+            \State Pair $M[i]$, $A[index - 1]$
+            \State Delete $A[index - 1]$ from $A$
+        \EndIf
+    \EndIf
+\EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Exchange Argument}
+Let $r$ be all the route-pairs in a solution that are greater than $d$ and let $l_i$ be the length of the route-pair . $p(G) = \sum_{r}(l_i - d)$ for our greedy solution $G$, similarly for an optimal Solution $S$ $p(S) = \sum_{r}(l_i - d)$
+
+If, $G = S$ then clearly $p(G) = p(S)$.
+
+Otherwise, $G \neq S$. So, there must be some 2 routes in $G$ and $S$, such that the morning routes are the same but the paired afternoon routes are different. More formally, if ($M_G(i)$, $A_G(i)$), ($M_G(j)$, $A_G(j)$) are 2 pairs in G and ($M_S(k)$, $A_S(k)$), ($M_S(l)$, $A_S(l)$) are 2 pairs in S, then
+$$M_G(i) = M_S(k) \And M_G(j) = M_S(l)$$
+but,
+$$A_G(i) \neq A_S(k) \And A_G(j) \neq A_S(l)$$ \\
+Let, $M_{ik} = M_G(i) = M_S(k)$ and $M_{jl} = M_G(j) = M_S(l)$
+Now, consider the following scenarios in $S$:
+\begin{description}
+    \item[$M_{ik} \textgreater M_{jl}$] \hfill \\
+        Let $S`$ denote a solution which would have selected the ($M_{ik}, A_S(l)$) and ($M_{jl}, A_S(k)$) pair contrary to $S$. $S`$ is similar to $G$ in a way that $G$ would also have chosen the same pairing as $S`$. So, given the constraint on morning routes $S`$ will choose the afternoon route first for $M_{ik}$ and it will pair with $A_S(l)$ if:
+
+    \begin{enumerate}
+        \item \textbf{$A_S(l) \textgreater A_S(k)$ and $M_{ik} + A_S(l) \leq d$} \hfill \\
+            In this scenario, it is trivial to see that $M_{jl} + A_S(k) \leq d$ as both morning and afternoon trips are lesser than their counterparts i.e $M_{jl} \textless M_{ik}$ and $A_S(k) \textless A_S(l)$. So, the choice of pair for $S`$ does not yield any overtime. Hence, $p(S`) \leq p(S)$
+
+        \item \textbf{$A_S(l) \textless A_S(k)$ and $M_{ik} + A_S(l) \textgreater d$} \hfill \\
+            Here, if $M_{jl} + A_S(k) \textgreater d$ it is trivial to see that $p(S`) = p(S)$ since the extra hours for both the selections will be $2d - M_{ik} - M_{jl} - A_S(k) - A_S(l)$. \\
+            If, $M_{jl} + A_S(k) \leq d$ then it implies that $M_{jl} + A_S(l) \leq d$ from the constraints. $p(S`) =  M_{ik} + A_S(l) - d$ and $p(S) = M_{ik} + A_S(k) - d$. From the constraints it is clear $p(S`) \textless p(S)$
+    \end{enumerate}
+\end{description}
+
+From the above analysis it is clear that $p(S`) \leq p(S)$ whenever the order is changed according to greedy strategy.
+
 
 \end{document}
