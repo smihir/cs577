@@ -149,8 +149,7 @@ To sort get the routes in correct order for our greedy algorithm to process we w
 
 \textbf{Find-Pair} will take $O(\log{n})$ time in the worst case for input of size $n$. In the \textbf{Find-All-Pairs} procedure we can see that the input size to \textbf{Find-Pair} decreases by $1$ each iteration. So the total running time for \textbf{Find-All-Pairs} will be:
 
-$$\log{n} + c + log{n - 1} + c ...(n times)$$
-$$= n*c + \log{n!}$$
+$$\log{n} + c + log{n - 1} + c ...(n times) = n*c + \log{n!}$$
 
 So the total running time of \textit{ordering} and running the \textit{strategy} will be:
 
