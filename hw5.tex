@@ -90,10 +90,11 @@ Let $M$ be the array of all ordered morning trips and $A$ be the array reresenti
 
 \State $i \leftarrow 0$
 
-\While{$i \textless \left\vert{A}\right\vert$}
+\While{$i \textless \left\vert{M}\right\vert$}
     \If {$M[i] \geq d$}
         \State Pair $M[i]$, $A[0]$
         \State Delete $A[0]$ from $A$
+        \State $i \leftarrow i + 1$
         \State continue
     \EndIf
     \State $key \leftarrow d - M[i]$
@@ -110,6 +111,7 @@ Let $M$ be the array of all ordered morning trips and $A$ be the array reresenti
             \State Delete $A[index - 1]$ from $A$
         \EndIf
     \EndIf
+    \State $i \leftarrow i + 1$
 \EndWhile
 \EndProcedure
 \end{algorithmic}
@@ -145,7 +147,7 @@ Now, consider the following scenarios in $S$:
 From the above analysis it is clear that $p(S') \leq p(S)$ whenever the order is changed according to greedy strategy. Hence, our greedy strategy will provide an optimal solution.
 
 \subsection{Running Time Analysis}
-To sort get the routes in correct order for our greedy algorithm to process we will have to spend $O(n\log{n})$ time. The \textbf{Find-All-Pairs} procedure will iterate over all $n$ elements in $M$ and all the operations in these iterations are constant time except \textbf{Find-Pair} da.
+To sort get the routes in correct order for our greedy algorithm to process we will have to spend $O(n\log{n})$ time. The \textbf{Find-All-Pairs} procedure will iterate over all $n$ elements in $M$ and all the operations in these iterations are constant time except \textbf{Find-Pair}.
 
 \textbf{Find-Pair} will take $O(\log{n})$ time in the worst case for input of size $n$. In the \textbf{Find-All-Pairs} procedure we can see that the input size to \textbf{Find-Pair} decreases by $1$ each iteration. So the total running time for \textbf{Find-All-Pairs} will be:
 
