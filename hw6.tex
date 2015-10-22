@@ -1,0 +1,48 @@
+\documentclass[8pt]{article}
+
+\usepackage{fullpage}
+\usepackage[margin=.7in]{geometry}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{ragged2e}
+\usepackage[parfill]{parskip}
+
+\newcommand{\proof}[1]{
+{\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
+}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{corollary}[lemma]{Corollary}
+
+\begin{document}
+\hfill \small{\today} \\
+\setlength{\fboxrule}{.5mm}\setlength{\fboxsep}{1.2mm}
+\newlength{\boxlength}\setlength{\boxlength}{\textwidth}
+\addtolength{\boxlength}{-4mm}
+\begin{center}\framebox{\parbox{\boxlength}{\bf
+\center{CS 577 - Homework 6}
+\center{Sejal Chauhan, Vinothkumar Siddharth, Mihir Shete}
+}}\end{center}
+\vspace{5mm}
+
+\section{Graded written problem}
+
+\textbf{Input:} In a library, there are $n$ books that must be stored in alphabetical order in adjustable height shelves. Each book $b_i$ has height $h_i$ and a thickness $t_i$. Each shelf has width $w$. The next shelf will be placed on top of max($h_i$) on the given shelf.
+\\ \\
+\textbf{Output:} Minimize the total height of the shelves to store all the books.
+
+\subsection{Algorithm}
+Our dynamic programming algorithm begins by considering the $b_i$ and traversing the array while summing up the thickness $t_i$ of each. We stop when the summation of $t_i$ has reached w. Now we find the max($h_i$) and then place the next shelf right above it. We continue this till all the books have been shelved. The only place where we can make a decision is the last book kept on the shelf that completes the $t_i$ summation to w. If the $h_i$ is greater than the rest of the books on the shelf, we compare it with the next shelf books whose thickness sums upto w. If the book is less than the max($h_i$), then we place it on the next shelf, else we place it on the same shelf. This helps us reduce the delta height that the lower shelf make add to the entire book shelf height.
+
+\end{document}
