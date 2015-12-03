@@ -1,0 +1,88 @@
+\documentclass[8pt]{article}
+
+\usepackage{fullpage}
+\usepackage[margin=.5in]{geometry}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{ragged2e}
+\usepackage[parfill]{parskip}
+
+\newcommand{\proof}[1]{
+{\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
+}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{corollary}[lemma]{Corollary}
+
+\begin{document}
+\hfill \small{\today} \\
+\setlength{\fboxrule}{.5mm}\setlength{\fboxsep}{1.2mm}
+\newlength{\boxlength}\setlength{\boxlength}{\textwidth}
+\addtolength{\boxlength}{-4mm}
+\begin{center}\framebox{\parbox{\boxlength}{\bf
+\center{CS 577 - Homework 7}
+\center{Sejal Chauhan, Vinothkumar Siddharth, Mihir Shete}
+}}\end{center}
+\vspace{5mm}
+
+\section{Graded written problem}
+
+\textbf{Input:} Given a sheet $A X B$, there are $(a_{i}, b_{i})$, where $i$ is a positive integer, sculptures that can be formed.
+\\ \\
+\textbf{Output:} Maximize the number of sculptures that can be made from the starting sheet of paper while minimizing frayed edges that must be visible
+
+\subsection{Algorithm}
+
+Basically, we are using a top-down Dynamic programming approach to solve this problem.
+The algorithm in pseudocode looks as follows:
+\begin{algorithm}
+\caption{Maximize the number of sculptures and minimize frayed edges that must be visible.}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Find-Max-Sculptures}{$A$, $B$, $S[1..n]$}
+
+\State $MaxSculpture[A][B] \leftarrow 0$
+\State $FrEdges[A][B] \leftarrow 0$
+
+\For{\texttt{i = 1..A}}
+    \For{\texttt{j = 1..B}}
+        \For{\texttt{s = S[1]..S[n]}}
+            \If{$ s_{length} \textless i$ AND $s_{breadth} \textless j$}\Comment{checking if the length and breadth are less than A and B}
+                \State $Max1 \leftarrow 1 + MaxSculpture[i-s_{length}][s_{breadth}] + MaxSculpture[i][j-s_{breadth}]$
+                \State $FrEdges1 \leftarrow CalFrayedEdges()$
+                \State $Max2 \leftarrow 1 + MaxSculpture[i-s_{length}][j] + MaxSculpture[s_{length}][j-s_{breadth}]$
+                \State $FrEdges2 \leftarrow CalFrayedEdges()$
+            
+            \EndIf
+            \If{$ s_{length} \textless B$ $1$ AND $s_{breadth} \textless A$ $2$}
+                \State $Max3 \leftarrow 1 + MaxSculpture[s_{breadth}][j-s_{length}] + MaxSculpture[i-s_{breadth}][j]$
+                \State $FrEdges3 \leftarrow CalFrayedEdges()$
+                \State $Max4 \leftarrow 1 + MaxSculpture[i-s_{breadth}][s_{length}] + MaxSculpture[i][j-s_{length}]$
+                \State $FrEdges4 \leftarrow CalFrayedEdges()$
+            
+            \EndIf
+        \State $MaxSculpture[i][j] \leftarrow \max {Max1, Max2, Max3, Max4}$
+        \State $FrEdge[i][j] \leftarrow \max {FrEdges1, FrEdges2, FrEdges3, FrEdges4}$
+        \EndFor
+    \EndFor
+\EndFor
+
+\State \Return{$\max (MaxSculpture[][])$}
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+As we can see,  we are using 3 loops in our procedure, first one is used to iterate over the edge with length $A$. The second one will go over all the permutations of length $B$. While considering each permutation we also check if the frayed edges of the total sculptures that are made. So the performance of our algorithm will be $O(n^3).$
+
+\end{document}
