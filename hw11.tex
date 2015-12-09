@@ -1,0 +1,60 @@
+\documentclass[8pt]{article}
+
+\usepackage{fullpage}
+\usepackage[margin=.5in]{geometry}
+\usepackage{epic}
+\usepackage{eepic}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{ragged2e}
+\usepackage[parfill]{parskip}
+
+\newcommand{\proof}[1]{
+{\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
+}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{corollary}[lemma]{Corollary}
+
+\begin{document}
+\hfill \small{\today} \\
+\setlength{\fboxrule}{.5mm}\setlength{\fboxsep}{1.2mm}
+\newlength{\boxlength}\setlength{\boxlength}{\textwidth}
+\addtolength{\boxlength}{-4mm}
+\begin{center}\framebox{\parbox{\boxlength}{\bf
+\center{CS 577 - Homework 11}
+\center{Sejal Chauhan, Vinothkumar Siddharth, Mihir Shete}
+}}\end{center}
+\vspace{5mm}
+
+\section{Graded written problem}
+
+\textbf{Part a:} Two Travelling Turkey Problem (TTTP) as mentioned in the written problem has the following contraints:
+\begin{itemize}
+\item Each city is visited at least once
+\item Number of distinct routes has to be as small as possible
+\item Each city can be visited any number of times
+\item Path starts and ends at the same city (DC)
+\item Maximum of the total effort of the two turkeys is minimized
+\end{itemize}
+
+Formally we can describe the desicion version of the problem as :
+
+Given a doubly-edged complete graph G with different edge weights, find a spanning tree which has minimum cost for the maximum of the two costs among all possible spanning trees. For the graph G, find if there exists a spanning tree whose cost is atmost k.
+It can be checked in polynomial time, if such a spanning tree exists. Else it will report that no solution exists. Hence the above formulization fits in the framework of NP-complete problems as described in the lecture notes. This is a NP-complete decision problem under polynomial-time reductions. 
+
+\textbf{Part b:} Decision problem is NP - complete
+
+The NP problem of subsetsum(SS) can be reduced to TTTP as below:
+
+
+\end{document}
