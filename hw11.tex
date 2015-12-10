@@ -10,6 +10,8 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{ragged2e}
 \usepackage[parfill]{parskip}
+\usepackage{amssymb}
+
 
 \newcommand{\proof}[1]{
 {\noindent {\it Proof.} {#1} \rule{2mm}{2mm} \vskip \belowdisplayskip}
@@ -43,24 +45,28 @@
 \item Each city is visited at least once
 \item Number of distinct routes has to be as small as possible
 \item Each city can be visited any number of times
-\item Path starts and ends at the same city (DC)
+\item Path starts and ends at the same city
 \item Maximum of the total effort of the two turkeys is minimized
 \end{itemize}
 
-Formally we can describe the desicion version of the problem as :
+To formally describe the problem we will consider a complete graph $G = (V, E)$ with $2$ edge-weight functions $w_a: E \rightarrow \mathbb{R}$ and $w_h: E \rightarrow \mathbb{R}$. Where $w_a(e)$ represents the effort taken by \textit{Abe} to travel along the edge $e$ from a city on one end of the edge to the other, while $w_h(e)$ represents the effort required by \textit{Honest}
 
-Given a doubly-edged complete graph G with different edge weights, find a spanning tree which has at most cost k for the maximum of the two costs among all possible spanning trees. For the graph G, find if there exists a spanning tree whose cost is atmost k for either of the summation of the edges else report that no solution exists.
-It can be checked in polynomial time, if such a spanning tree exists. Hence the above formulization fits in the framework of NP-complete desicion problem under polynomial time reductions, as described in the lecture notes.
+With the above definition for the graph $G$ we can describe the decision version of the problem as:
+
+For the graph G and $k \in \mathbb{R}$, report \textit{yes} if there exists a spanning tree $S$ such that $MAX(\sum_{\forall e \in S}{w_a(e)}, \sum_{\forall e \in S}{w_h(e)})$ is at-most $k$, else report \textit{no}.
 
 \textbf{Part b:} Decision problem is NP-complete
 
 To prove that TTTP decision problem is NP-complete, we will show that Partition Set(PS) that is a known NP-complete problem, can be reduced to TTTP problem.
-Given a set S that must be partitioned such the the sum of the two subsets should be equal. We need to pre-process the subset problem in such a manner that it cn be given to TTTP as an input. For the PS problem, our input is an array of length n. We create a root node, and for every element in S we add two vertices with edge weight as (S[i], 0) and (0, S[i]). The edge weight between these two vertices is (0,0). Construct this graph with all the elements in S and make it a completed connected graph with all the other vertices is ($∞$,$∞$). This is a polynomial time task.
+Given a set $S$ of Real numbers and the sum of all elements in $S$ as $2*w$, we compute a graph $G$, such that $G$ has a spanning tree $ST$ with $MAX(\sum_{\forall e \in ST}{w_a(e)}, \sum_{\forall e \in ST}{w_h(e)}) \leq w$ only if we can Partition the set using PS algorithm.
 
+To transform the elements of $S$ to the graph $G$ we create a root node for every element $i$ in $S$ and add two vertices with edge weight as ($w_a = S[i]$, $w_h = 0$) and ($w_a = 0$, $w_h = S[i]$). The edge weight between these two vertices is (0,0). Construct these gadgets with all the elements in $S$ and make it a completed graph by connecting all the roots of the gadgets to each other with ($w_a = 0$,$w_h = 0$) and remaining connections are made with edge weights ($w_a = \infty$,$w_h = \infty$).
 
-This graph is now given as an input to the TTTP problem. Each edge is doubly weighted and TTTP has to find whether such a solution for this completed graph exists or not wherein k is equal to half of the total sum of the set S. TTTP will find a spanning tree with the given vertices that will ensure every element of the set is considered. Else it will report that no such solution exists. Let us consider that the edges that were considered to construct the spanning tree is (S[0],0), (0,S[1]), (0, S[2]).. etc. We will now carry out ordered sum for all these edges and obtain (S1,S2), both should be equal to k. This addition is a polynomial time task. Now, the elements in S1 and S2 is the required subsets solution for the PS NP problem.
+Now, if the PS-decision problem returns that \textit{yes} we can partition the set $S$ in $2$ subsets such that each subset has sum $w$ then it is trivial to see that the TTTP-decision problem can always find a spanning tree in the graph $G$ such that the elements in the $2$ subsets correspond to effort of each of the turkeys in the spanning tree, and the TTTP-decision problem will also return \textit{yes}
 
-This is how we can successfully reduce PS to TTTP.
+If the PS-decision problem returns \textit{no}, then consider a spanning tree made of edges whose weights are not $\infty$. Such a spanning tree will have all the elements in the set $S$ either as the edge weights for one turkey or the other. In such a case we can see that the sum of edge-weights for the spanning tree for both the turkeys will be $2*w$, now since we cannot \textit{Partition} these weights the sum of weights of edges for one turkey will be less than $w$ and so for the other turkey it will be greater than $w$ and the TTTP-decision problem will also return \textit{no} by definition.
+
+Thus, PS-decision can be reduced to TTTP-decision problem and so TTTP-decision problem is NP-complete.
 
 
 
